@@ -1,42 +1,43 @@
-# AI Interview Screener (Node.js + Express + Prisma + Neon)
+# AI Interview Screener (Node.js + Express)
 
-A minimal backend that evaluates candidate answers using an LLM and ranks candidates. Includes Prisma schema and Neon Postgres instructions.
+A minimal backend that evaluates candidate answers using an LLM and ranks candidates answers.
 
 ## Features
 
 - POST /api/evaluate-answer → Evaluate single answer (returns { score, summary, improvement })
 - POST /api/rank-candidates → Evaluate multiple in parallel, return ranked results
-- Optional saving of answers + evaluations to Postgres (Prisma)
 
 ---
 
-## Prerequisite
+## Why Node.js Instead of Python (FastAPI)
 
-- Node.js 18+
-- npm
-- Neon Postgres account (free tier)
-- Prisma CLI (installed as dev dependency)
+- Node.js is optimized for high-volume, non-blocking I/O operations.
+- Result: faster concurrent LLM requests and better scalability.
+- Express gives extremely lightweight API routing.
+- Node.js runs easily on platforms like Vercel, Railway, Render, Cloudflare Workers, etc.
+- For a small LLM evaluation service that focuses on HTTP calls, speed, and rapid delivery,
+- Node.js provides the best balance of performance, simplicity, and startup-style engineering.
 
----
-
-## Quick start (local)
+## Quick start
 
 1. Clone repo
-2. `cp .env.example .env` and fill values:
-   - `DATABASE_URL` (get from Neon dashboard; example: `postgresql://user:pass@<host>:5432/<db>?sslmode=require`)
+
+```
+git clone https://github.com/Irshad-Ahmaed/AI-Interview-Screener.git
+cd AI-Interview-Screener
+```
+
+2. Environment variables:
+
    - `GROQ_API_KEY` and `GROQ_API_URL` (or your chosen LLM provider)
+
 3. Install:
-   ```
-   npm install
-   ```
-4. Initialize Prisma (already included in repo) and run migrations:
 
 ```
-npx prisma generate
-npx prisma migrate dev --name init
+npm install
 ```
 
-5. Start dev server:
+4. Start dev server:
 
 ```
 npm run dev
@@ -50,12 +51,3 @@ npm run dev
   Body: `{ "answers": ["...", "..."] }`
 
 ---
-
-## Prisma + Neon (detailed)
-
-1. Create a Neon project and database. Copy the connection string from the Neon dashboard.
-2. Set your `.env` `DATABASE_URL` to Neon connection string. Neon examples & Prisma guide: https://neon.com/docs/guides/prisma and https://neon.com/docs/guides/prisma-migrations. :contentReference[oaicite:2]{index=2}
-3. Generate Prisma client:
-   `npx prisma generate`
-4. Create and run migrations (development):
-   `npx prisma migrate dev --name init`
