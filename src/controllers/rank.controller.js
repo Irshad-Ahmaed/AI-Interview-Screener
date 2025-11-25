@@ -4,7 +4,15 @@ import { llmEvaluate } from "../services/llm.service.js";
 export async function rankController(req, res, next) {
   try {
     const result = RankValidator.safeParse(req.body);
-    if (!result.success) return res.status(400).json({ error: result.error.errors });
+    
+    if (!result.success) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid input",
+        details: result.error.issues
+      });
+    }
+
 
     const { answers } = result.data;
 

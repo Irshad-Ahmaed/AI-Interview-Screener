@@ -7,7 +7,11 @@ export async function evaluateController(req, res, next) {
     console.log('result', result);
 
     if (!result.success) {
-      return res.status(400).json({ error: result.error.errors });
+      return res.status(400).json({
+        success: false,
+        message: "Invalid input",
+        details: result.error.issues
+      });
     }
 
     const { answer } = result.data;
